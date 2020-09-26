@@ -1,7 +1,7 @@
 (function() {
 
     "use strict"
-    var ClassifiedsController = function($scope, classifiedsService, $mdSidenav, $mdToast, $mdDialog) {
+    var ClassifiedsController = function($scope, classifiedsService, $mdSidenav, $mdToast, $mdDialog, $state, $http) {
         var vm = this;
 
         vm.message = "ngClassifieds";
@@ -25,12 +25,24 @@
             console.log(error);
         })
 
+        // $http.get('http://api.github.com/users').then(function(response) {
+        //     console.log(response);
+        // })
 
 
+        $scope.$on('newClassified', function(event, classified) {
+            classified.id = vm.classifieds.length + 1;
+            saveClassified(classified);
+        })
+
+        $scope.$on('editSaved', function(event, message) {
+            showToast(message);
+        })
 
 
         function openSidepanel() {
-            $mdSidenav('left').open();
+            // $mdSidenav('left').open();
+            $state.go('classifieds.new')
         }
 
         function closeSidepanel() {
@@ -42,12 +54,7 @@
                 return;
             }
             //faking contact, otherwise should come from login info
-            var contact = {
-                name: "Archi",
-                phone: "+91-9876543210",
-                email: "aj@gmail.com"
-            };
-            classified.contact = contact;
+
             vm.classifieds.push(classified);
             vm.classified = {}; //can be used here because its binded by ng-model on template
             closeSidepanel();
@@ -56,9 +63,13 @@
         }
 
         function editClassified(classifiedForEditing) {
-            vm.editing = true;
-            openSidepanel();
-            vm.classified = classifiedForEditing;
+            // vm.editing = true;
+            // openSidepanel();
+            // vm.classified = classifiedForEditing;
+            $state.go('classifieds.edit', {
+                id: classifiedForEditing.id, //id is mapped to url : edit/:id in editClassifiedController
+                classified: classifiedForEditing
+            });
         }
 
         function saveEdit() {
@@ -105,7 +116,7 @@
             return categories;
         }
     };
-    ClassifiedsController.$inject = ["$scope", "classifiedsService", "$mdSidenav", "$mdToast", "$mdDialog"];
+    ClassifiedsController.$inject = ["$scope", "classifiedsService", "$mdSidenav", "$mdToast", "$mdDialog", "$state", "$http"];
     angular.module("ngClassifieds").controller("ClassifiedsController", ClassifiedsController);
 
 }());
