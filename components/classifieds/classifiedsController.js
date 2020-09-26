@@ -2,14 +2,25 @@
 
     "use strict"
     var ClassifiedsController = function($scope, classifiedsService, $mdSidenav, $mdToast, $mdDialog) {
-        $scope.message = "ngClassifieds";
-        $scope.editing = false;
-        $scope.categories = [];
+        var vm = this;
+
+        vm.message = "ngClassifieds";
+        vm.editing = false;
+        vm.categories = [];
+
+        vm.openSidepanel = openSidepanel;
+        vm.closeSidepanel = closeSidepanel;
+        vm.deleteClassified = deleteClassified;
+        vm.editClassified = editClassified;
+        vm.saveClassified = saveClassified;
+        vm.saveEdit = saveEdit;
+
+
 
 
         classifiedsService.getClassifieds().then(function(classifiedsData) {
-            $scope.classifieds = classifiedsData.data; //getting data object from json object
-            $scope.categories = getCategories($scope.classifieds);
+            vm.classifieds = classifiedsData.data; //getting data object from json object
+            vm.categories = getCategories(vm.classifieds);
         }).catch(function(error) {
             console.log(error);
         })
@@ -18,15 +29,15 @@
 
 
 
-        $scope.openSidepanel = function() {
+        function openSidepanel() {
             $mdSidenav('left').open();
         }
 
-        $scope.closeSidepanel = function() {
+        function closeSidepanel() {
             $mdSidenav('left').close();
         }
 
-        $scope.saveClassified = function(classified) {
+        function saveClassified(classified) {
             if (!classified) {
                 return;
             }
@@ -37,27 +48,27 @@
                 email: "aj@gmail.com"
             };
             classified.contact = contact;
-            $scope.classifieds.push(classified);
-            $scope.classified = {}; //can be used here because its binded by ng-model on template
-            $scope.closeSidepanel();
+            vm.classifieds.push(classified);
+            vm.classified = {}; //can be used here because its binded by ng-model on template
+            closeSidepanel();
             showToast("Classified saved!");
 
         }
 
-        $scope.editClassified = function(classifiedForEditing) {
-            $scope.editing = true;
-            $scope.openSidepanel();
-            $scope.classified = classifiedForEditing;
+        function editClassified(classifiedForEditing) {
+            vm.editing = true;
+            openSidepanel();
+            vm.classified = classifiedForEditing;
         }
 
-        $scope.saveEdit = function() {
-            $scope.editing = false;
-            $scope.classified = {};
-            $scope.closeSidepanel();
+        function saveEdit() {
+            vm.editing = false;
+            vm.classified = {};
+            closeSidepanel();
             showToast("Classified changes saved!")
         }
 
-        $scope.deleteClassified = function(event, classifiedForDeleting) {
+        function deleteClassified(event, classifiedForDeleting) {
 
             var confirm = $mdDialog.confirm()
                 .title(`Are you sure you want to delete ${classifiedForDeleting.title} ?`)
@@ -65,8 +76,8 @@
                 .cancel("No")
                 .targetEvent(event);
             $mdDialog.show(confirm).then(function() {
-                var index = $scope.classifieds.indexOf(classifiedForDeleting);
-                $scope.classifieds.splice(index, 1);
+                var index = vm.classifieds.indexOf(classifiedForDeleting);
+                vm.classifieds.splice(index, 1);
             }, function() {
 
             });
