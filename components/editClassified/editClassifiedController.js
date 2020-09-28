@@ -5,8 +5,17 @@
         var vm = this;
         vm.closeSidePanel = closeSidePanel;
         vm.saveEdit = saveEdit;
-        vm.classified = $state.params.classified; //classified object that comes through routing
         vm.isSidePanelOpen = false;
+        vm.classifieds = classifiedsService.getFirebaseRef().ref;
+        //vm.classified = $state.params.classified; //classified object that comes through routing
+
+        vm.classifieds.$loaded().then(function(classifieds) {
+            vm.classified = classifieds.$getRecord($state.params.id);
+        }).catch(function(error) {
+            console.log(error);
+        });
+
+
         $timeout(function() {
             $mdSidenav('left').open();
         });
@@ -25,9 +34,12 @@
         }
 
         function saveEdit(classified) {
+            //save to firebase
+            vm.classifieds.$save(vm.classified).then(function() {
+                $scope.$emit('editSaved', 'Changes Saved');
+                vm.isSidePanelOpen = false;
+            });
 
-            $scope.$emit('editSaved', 'Changes Saved');
-            vm.isSidePanelOpen = false;
         }
 
     }

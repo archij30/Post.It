@@ -75,8 +75,8 @@
             // openSidepanel();
             // vm.classified = classifiedForEditing;
             $state.go('classifieds.edit', {
-                id: classifiedForEditing.id, //id is mapped to url : edit/:id in editClassifiedController
-                classified: classifiedForEditing
+                id: classifiedForEditing.$id, //id is mapped to url : edit/:id in editClassifiedController
+                //classified: classifiedForEditing
             });
         }
 
@@ -95,8 +95,10 @@
                 .cancel("No")
                 .targetEvent(event);
             $mdDialog.show(confirm).then(function() {
-                var index = vm.classifieds.indexOf(classifiedForDeleting);
-                vm.classifieds.splice(index, 1);
+                // var index = vm.classifieds.indexOf(classifiedForDeleting);
+                // vm.classifieds.splice(index, 1);
+                vm.classifieds.$remove(classifiedForDeleting);
+                showToast("Classified deleted!")
             }, function() {
 
             });
@@ -115,11 +117,14 @@
         function getCategories(classifieds) {
             var categories = [];
             classifieds.forEach(classified => {
-                classified.categories.forEach(cat => {
-                    if (categories.indexOf(cat) === -1) {
-                        categories.push(cat);
-                    }
-                });
+                if (classified.categories) {
+                    classified.categories.forEach(cat => {
+                        if (categories.indexOf(cat) === -1) {
+                            categories.push(cat);
+                        }
+                    });
+                }
+
             });
             return categories;
         }
