@@ -1,0 +1,47 @@
+button .material-icons {
+    margin-bottom: 15px;
+    color: white!important;
+}
+
+md-toolbar .md-toolbar-tools {
+    color: white;
+    opacity: 95%;
+}
+
+.classified-contact {
+    flex: 1 1 auto;
+}
+
+.classified-info {
+    flex: 1 1 auto;
+}
+
+.modify-card-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+}
+
+.classified.ng-enter,
+.classified.ng-move {
+    transition: 0.4s all;
+    opacity: 0;
+}
+
+.classified.ng-enter.ng-enter-active,
+.classified.ng-move.ng-move-active {
+    opacity: 1;
+}
+
+.classified.ng-leave {
+    animation: 0.4s fade_classified;
+}
+
+@keyframes fade_classified {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

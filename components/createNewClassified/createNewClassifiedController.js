@@ -1,7 +1,7 @@
 (function() {
     "use strict";
 
-    var NewClassifiedController = function($scope, $state, $mdSidenav, $mdDialog, classifiedsService, $timeout) {
+    var NewClassifiedController = function($scope, $state, $mdSidenav, $mdDialog, $timeout) {
         var vm = this;
         vm.closeSidePanel = closeSidePanel;
         vm.saveClassified = saveClassified;
@@ -38,7 +38,7 @@
 
     }
 
-    NewClassifiedController.$inject = ["$scope", "$state", "$mdSidenav", "$mdDialog", "classifiedsService", "$timeout"];
+    NewClassifiedController.$inject = ["$scope", "$state", "$mdSidenav", "$mdDialog", "$timeout"];
 
     angular.module('ngClassifieds').controller('NewClassifiedController', NewClassifiedController);
 }());

@@ -1,12 +1,14 @@
 (function() {
     let ngClassifiedsApp = angular.module("ngClassifieds", ["ngMaterial", "ngAnimate", "ui.router", "firebase"]);
-    ngClassifiedsApp.config(function($mdThemingProvider, $stateProvider) {
+    ngClassifiedsApp.config(function($mdThemingProvider, $stateProvider,$urlRouterProvider) {
         //changing default theme to blue
         $mdThemingProvider.theme('default')
             .primaryPalette('teal')
             .accentPalette('orange');
 
+        $urlRouterProvider.otherwise("/classifieds");
         $stateProvider
+
             .state('classifieds', {
                 url: "/classifieds",
                 templateUrl: "../components/classifieds/views/classifieds.tpl.html",

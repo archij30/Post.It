@@ -4,16 +4,16 @@
     var ClassifiedsController = function($scope, classifiedsService, $mdSidenav, $mdToast, $mdDialog, $state, $http, $firebaseArray) {
         var vm = this;
 
-        vm.message = "ngClassifieds";
-        vm.editing = false;
+        //vm.message = "ngClassifieds";
+        //vm.editing = false;
         vm.categories = [];
 
         vm.openSidepanel = openSidepanel;
-        vm.closeSidepanel = closeSidepanel;
-        vm.deleteClassified = deleteClassified;
-        vm.editClassified = editClassified;
-        vm.saveClassified = saveClassified;
-        vm.saveEdit = saveEdit;
+        //vm.closeSidepanel = closeSidepanel;
+        // vm.deleteClassified = deleteClassified;
+        // vm.editClassified = editClassified;
+        // vm.saveClassified = saveClassified;
+        // vm.saveEdit = saveEdit;
         vm.classifieds = classifiedsService.getFirebaseRef().ref;
 
 
@@ -31,9 +31,9 @@
         //     console.log(error);
         // })
 
-        $http.get('http://api.github.com/users').then(function(response) {
-            console.log(response);
-        })
+        // $http.get('http://api.github.com/users').then(function(response) {
+        //     console.log(response);
+        // })
 
 
         $scope.$on('newClassified', function(event, classified) {
@@ -53,32 +53,32 @@
             $state.go('classifieds.new')
         }
 
-        function closeSidepanel() {
-            $mdSidenav('left').close();
-        }
+        // function closeSidepanel() {
+        //     $mdSidenav('left').close();
+        // }
 
-        function saveClassified(classified) {
-            if (!classified) {
-                return;
-            }
-            //faking contact, otherwise should come from login info
+        // function saveClassified(classified) {
+        //     if (!classified) {
+        //         return;
+        //     }
+        //     //faking contact, otherwise should come from login info
 
-            vm.classifieds.push(classified);
-            vm.classified = {}; //can be used here because its binded by ng-model on template
-            closeSidepanel();
-            showToast("Classified saved!");
+        //     vm.classifieds.push(classified);
+        //     vm.classified = {}; //can be used here because its binded by ng-model on template
+        //     closeSidepanel();
+        //     showToast("Classified saved!");
 
-        }
+        // }
 
-        function editClassified(classifiedForEditing) {
-            // vm.editing = true;
-            // openSidepanel();
-            // vm.classified = classifiedForEditing;
-            $state.go('classifieds.edit', {
-                id: classifiedForEditing.$id, //id is mapped to url : edit/:id in editClassifiedController
-                //classified: classifiedForEditing
-            });
-        }
+        // function editClassified(classifiedForEditing) {
+        //     // vm.editing = true;
+        //     // openSidepanel();
+        //     // vm.classified = classifiedForEditing;
+        //     $state.go('classifieds.edit', {
+        //         id: classifiedForEditing.$id, //id is mapped to url : edit/:id in editClassifiedController
+        //         //classified: classifiedForEditing
+        //     });
+        // }
 
         function saveEdit() {
             vm.editing = false;
@@ -87,23 +87,23 @@
             showToast("Classified changes saved!")
         }
 
-        function deleteClassified(event, classifiedForDeleting) {
+        // function deleteClassified(event, classifiedForDeleting) {
 
-            var confirm = $mdDialog.confirm()
-                .title(`Are you sure you want to delete ${classifiedForDeleting.title} ?`)
-                .ok("Yes")
-                .cancel("No")
-                .targetEvent(event);
-            $mdDialog.show(confirm).then(function() {
-                // var index = vm.classifieds.indexOf(classifiedForDeleting);
-                // vm.classifieds.splice(index, 1);
-                vm.classifieds.$remove(classifiedForDeleting);
-                showToast("Classified deleted!")
-            }, function() {
+        //     var confirm = $mdDialog.confirm()
+        //         .title(`Are you sure you want to delete ${classifiedForDeleting.title} ?`)
+        //         .ok("Yes")
+        //         .cancel("No")
+        //         .targetEvent(event);
+        //     $mdDialog.show(confirm).then(function() {
+        //         // var index = vm.classifieds.indexOf(classifiedForDeleting);
+        //         // vm.classifieds.splice(index, 1);
+        //         vm.classifieds.$remove(classifiedForDeleting);
+        //         showToast("Classified deleted!")
+        //     }, function() {
 
-            });
+        //     });
 
-        }
+        // }
 
         function showToast(message) {
             $mdToast.show(
